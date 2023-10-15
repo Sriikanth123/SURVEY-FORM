@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+    }
+    .container {
+      max-width: 500px;
+      margin: 0 auto;
+    }
+    .form-group {
+      margin-bottom: 15px;
+    }
+    .form-group label {
+      display: block;
+      font-weight: bold;
+    }
+    .form-group input[type="text"],
+    .form-group input[type="email"],
+    .form-group select {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    .form-group .checkbox-group {
+      display: flex;
+      align-items: center;
+    }
+    .form-group .checkbox-group label {
+      margin-right: 10px;
+    }
+    .form-group .error {
+      color: red;
+    }
+    .button-group {
+      text-align: center;
+    }
+    .button-group button {
+      padding: 10px 20px;
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      margin-right: 10px;
+      cursor: pointer;
+    }
+    .button-group button.reset {
+      background-color: #ccc;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <form id="survey-form">
+      <div class="form-group">
+        <label for="first-name">First Name:</label>
+        <input type="text" id="first-name" name="first-name" required>
+        <span class="error" id="first-name-error"></span>
+      </div>
+      <div class="form-group">
+        <label for="last-name">Last Name:</label>
+        <input type="text" id="last-name" name="last-name" required>
+        <span class="error" id="last-name-error"></span>
+      </div>
+      <div class="form-group">
+        <label for="dob">Date of Birth:</label>
+        <input type="date" id="dob" name="dob" required>
+      </div>
+      <div class="form-group">
+        <label for="country">Country:</label>
+        <select id="country" name="country" required>
+          <option value="USA">USA</option>
+          <option value="India">India</option>
+          <option value="UK">UK</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Gender:</label>
+        <div class="checkbox-group">
+          <input type="checkbox" id="male" name="gender" value="Male">
+          <label for="male">Male</label>
+          <input type="checkbox" id="female" name="gender" value="Female">
+          <label for="female">Female</label>
+          <input type="checkbox" id="other" name="gender" value="Other">
+          <label for="other">Other</label>
+        </div>
+        <span class="error" id="gender-error"></span>
+      </div>
+      <div class="form-group">
+        <label for="profession">Profession:</label>
+        <input type="text" id="profession" name="profession" required>
+      </div>
+      <div class="form-group">
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required>
+        <span class="error" id="email-error"></span>
+      </div>
+      <div class="form-group">
+        <label for="mobile">Mobile Number:</label>
+        <input type="tel" id="mobile" name="mobile" required>
+      </div>
+      <div class="button-group">
+        <button type="button" class="reset" id="reset-button">Reset</button>
+        <button type="button" id="submit-button">Submit</button>
+      </div>
+    </form>
+  </div>
+
+  <script>
+    document.getElementById('reset-button').addEventListener('click', function() {
+      document.getElementById('survey-form').reset();
+      clearErrors();
+    });
+
+    document.getElementById('submit-button').addEventListener('click', function() {
+      clearErrors();
+      var firstName = document.getElementById('first-name').value;
+      var lastName = document.getElementById('last-name').value;
+      var dob = document.getElementById('dob').value;
+      var country = document.getElementById('country').value;
+      var genderElements = document.querySelectorAll('input[name="gender"]:checked');
+      var gender = [];
+      genderElements.forEach(function(element) {
+        gender.push(element.value);
+      });
+      var profession = document.getElementById('profession').value;
+      var email = document.getElementById('email').value;
+      var mobile = document.getElementById('mobile').value;
+      var emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+      if (!emailPattern.test(email)) {
+        document.getElementById('email-error').innerText = 'Invalid email format';
+        return;
+      }
+      var namePattern = /^[a-zA-Z]+$/;
+      if (!namePattern.test(firstName)) {
+        document.getElementById('first-name-error').innerText = 'Invalid name format';
+        return;
+      }
+      if (!namePattern.test(lastName)) {
+        document.getElementById('last-name-error').innerText = 'Invalid name format';
+        return;
+      }
+      var popupText = "First Name: " + firstName + "\n";
+      popupText += "Last Name: " + lastName + "\n";
+      popupText += "Date of Birth: " + dob + "\n";
+      popupText += "Country: " + country + "\n";
+      popupText += "Gender: " + gender.join(', ') + "\n";
+      popupText += "Profession: " + profession + "\n";
+      popupText += "Email: " + email + "\n";
+      popupText += "Mobile Number: " + mobile + "\n";
+      alert(popupText);
+      document.getElementById('survey-form').reset();
+    });
+    function clearErrors() {
+      document.getElementById('first-name-error').innerText = '';
+      document.getElementById('last-name-error').innerText = '';
+      document.getElementById('gender-error').innerText = '';
+      document.getElementById('email-error').innerText = '';
+    }
+  </script>
+</body>
+</html>
